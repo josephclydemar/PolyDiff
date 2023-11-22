@@ -2,19 +2,19 @@ import re
 import math_operation
 
 def parse_expr(string_expr):
-    expression_search_pattern = r'([\+|\-])?([0-9]+|(\([0-9]+\/[0-9]+\)))?([\*|\/]?x)?(\^([0-9]+|(\([0-9]+\/[0-9]+\))))?'
+    expression_search_pattern = r'([\+|\-])?([0-9]+|(\([0-9]+\/[0-9]+\)))?([\*|\/]?x)?(\^\(([\-]?(([0-9]+)|([0-9]+\/[0-9]+)))\))?'
     expression_search_regex = re.compile(expression_search_pattern)
 
     term_coefficient_search_pattern = r'^[\+|\-]?([0-9]+|(\([0-9]+\/[0-9]+\)))?'
     term_coefficient_search_regex = re.compile(term_coefficient_search_pattern)
 
-    term_variable_search_pattern = r'x((\^([0-9]+|(\([0-9]+\/[0-9]+\))))$)?'
+    term_variable_search_pattern = r'x((\^(\(\-?([0-9]+|([0-9]+\/[0-9]+))\)))$)?'
     term_variable_search_regex = re.compile(term_variable_search_pattern)
 
     variable_search_pattern = r'^x'
     variable_search_regex = re.compile(variable_search_pattern)
 
-    exponent_search_pattern = r'\^([0-9]+|(\([0-9]+\/[0-9]+\)))'
+    exponent_search_pattern = r'\^(\(\-?([0-9]+|([0-9]+\/[0-9]+))\))'
     exponent_search_regex = re.compile(exponent_search_pattern)
 
     matched_terms = expression_search_regex.finditer(string_expr)
@@ -34,6 +34,7 @@ def parse_expr(string_expr):
             else:
                 term.append(x)
         for i in term_variable_search_regex.finditer(m.group()):
+            print(i.group())
             for j in variable_search_regex.finditer(i.group()):
                 term.append(j.group())
             for j in exponent_search_regex.finditer(i.group()):
