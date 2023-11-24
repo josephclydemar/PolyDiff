@@ -1,5 +1,7 @@
 import re
 import math_operation
+import latex_convert
+import matplotlib.pyplot as plt
 
 def parse_expr(string_expr):
     expression_search_pattern = r'([\+|\-])?([0-9]+|(\([0-9]+\/[0-9]+\)))?([\*|\/]?x)?(\^\(([\-]?(([0-9]+)|([0-9]+\/[0-9]+)))\))?'
@@ -34,7 +36,7 @@ def parse_expr(string_expr):
             else:
                 term.append(x)
         for i in term_variable_search_regex.finditer(m.group()):
-            print(i.group())
+            # print(i.group())
             for j in variable_search_regex.finditer(i.group()):
                 term.append(j.group())
             for j in exponent_search_regex.finditer(i.group()):
@@ -44,7 +46,26 @@ def parse_expr(string_expr):
     return parsed_expression
 
 
+
+def latex_to_image(latex_string, image_path):
+    fig = plt.figure(figsize=(0.1, 1))
+
+    plt.axis('off')
+    plt.text(0.05, 0.05, f'${latex_string}$', fontsize=20)
+
+    plt.savefig(image_path, format='png', bbox_inches='tight', pad_inches=0.05)
+    plt.close(fig)
+
+
 expr = input('Enter expression: ')
 separated_expr = parse_expr(expr)
-print(separated_expr)
-# print(math_operation.differentiate(separated_expr))
+latexed_expr = latex_convert.convert_to_latex(separated_expr)
+# differentiated_expr = math_operation.differentiate(separated_expr)
+latex_to_image(latexed_expr, 'wehh.png')
+
+
+print('before -> ', separated_expr)
+print('\n')
+print(latexed_expr)
+differentiated_expr = math_operation.differentiate(separated_expr)
+print('after -> ', differentiated_expr)
