@@ -1,13 +1,14 @@
 import re
+# import expr_simplify
 import math_operation
 import latex_convert
-import matplotlib.pyplot as plt
+
 
 def parse_expr(string_expr):
-    expression_search_pattern = r'([\+|\-])?([0-9]+|(\([0-9]+\/[0-9]+\)))?([\*|\/]?x)?(\^\(([\-]?(([0-9]+)|([0-9]+\/[0-9]+)))\))?'
+    expression_search_pattern = r'([\+|\-])?(\([\-|\+]?[0-9]+(\/[0-9]+)?\))?([\*|\/]?x)?(\^\(([\-]?(([0-9]+)|([0-9]+\/[0-9]+)))\))?'
     expression_search_regex = re.compile(expression_search_pattern)
 
-    term_coefficient_search_pattern = r'^[\+|\-]?([0-9]+|(\([0-9]+\/[0-9]+\)))?'
+    term_coefficient_search_pattern = r'^[\-|\+]?(\([\-|\+]?[0-9]+(\/[0-9]+)?\))?'
     term_coefficient_search_regex = re.compile(term_coefficient_search_pattern)
 
     term_variable_search_pattern = r'x((\^(\(\-?([0-9]+|([0-9]+\/[0-9]+))\)))$)?'
@@ -47,25 +48,19 @@ def parse_expr(string_expr):
 
 
 
-def latex_to_image(latex_string, image_path):
-    fig = plt.figure(figsize=(0.1, 1))
 
-    plt.axis('off')
-    plt.text(0.05, 0.05, f'${latex_string}$', fontsize=20)
-
-    plt.savefig(image_path, format='png', bbox_inches='tight', pad_inches=0.05)
-    plt.close(fig)
 
 
 expr = input('Enter expression: ')
 separated_expr = parse_expr(expr)
 latexed_expr = latex_convert.convert_to_latex(separated_expr)
-# differentiated_expr = math_operation.differentiate(separated_expr)
-latex_to_image(latexed_expr, 'wehh.png')
+derivative_expr = math_operation.differentiate(separated_expr)
+latexed_derivative = latex_convert.convert_to_latex(derivative_expr)
 
+latex_convert.latex_to_image(latexed_expr, './img/Y.png')
+latex_convert.latex_to_image(latexed_derivative, './img/Z.png')
 
 print('before -> ', separated_expr)
 print('\n')
-print(latexed_expr)
-differentiated_expr = math_operation.differentiate(separated_expr)
-print('after -> ', differentiated_expr)
+# print(latexed_expr)
+print('derivative', derivative_expr)

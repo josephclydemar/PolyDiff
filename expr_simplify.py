@@ -11,4 +11,4 @@ def evaluate(frac):
 def simplify(expr):
     sympy_expr = sp.simplify(expr)
     string_expr = str(sympy_expr)
-    return string_expr
+    return f'({string_expr})'
