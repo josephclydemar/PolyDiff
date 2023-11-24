@@ -6,10 +6,10 @@ def differentiate(expr):
         # before_diff = ''
         after_diff = ''
         if len(term) == 3:
-            coefficient = expr_simplify.evaluate(term[0]) * expr_simplify.evaluate(term[2])
-            exponent = expr_simplify.evaluate(term[2]) - 1
+            coefficient = expr_simplify.simplify(f'{term[0]}*{term[2]}')
+            exponent = expr_simplify.simplify(f'{term[2]}-1')
             # before_diff = f'{term[0]}*{term[1]}^{term[2]}'
-            after_diff = f'{coefficient}*{term[1]}^{exponent}'
+            after_diff = f'{coefficient}*{term[1]}^({exponent})'
             derivative.append(after_diff)
             print(term, ' : ', after_diff)
         elif len(term) == 2:
